@@ -1,15 +1,16 @@
-exports.ajax = function (params, callback) {
+exports.ajax = function (params, callback, failcallback) {
   if (typeof params == 'string') params = {url: params}
   var headers = params.headers || {}
     , body = params.body
     , method = params.method || (body ? 'POST' : 'GET')
     , withCredentials = params.withCredentials || false
 
-  var req = getRequest()
+  var req = getRequest();
 
   req.onreadystatechange = function () {
-    if (req.readyState == 4)
-      callback(req.status, req.responseText, req)
+    if (req.readyState == 4 && req.status==200)
+        typeof callback === 'function'&& callback(req.status, req.responseText, req)
+      else typeof failcallback === 'function' && failcallback(req.status, req)
   }
 
   if (body) {
@@ -17,12 +18,12 @@ exports.ajax = function (params, callback) {
     setDefault(headers, 'Content-Type', 'application/x-www-form-urlencoded')
   }
 
-  req.open(method, params.url, true)
+  req.open(method, params.url, true);
 
   // has no effect in IE
   // has no effect for same-origin requests
   // has no effect in CORS if user has disabled 3rd party cookies
-  req.withCredentials = withCredentials
+  req.withCredentials = withCredentials;
 
   for (var field in headers)
     req.setRequestHeader(field, headers[field])
@@ -39,5 +40,5 @@ function getRequest() {
 }
 
 function setDefault(obj, key, value) {
-  obj[key] = obj[key] || value
+  obj[key] = obj[key] || value;
 }

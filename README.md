@@ -1,9 +1,15 @@
 nanoajax
 ========
 
-[![Build Status](https://travis-ci.org/yanatan16/nanoajax.svg)](https://travis-ci.org/yanatan16/nanoajax)
+## Differences from the original version
 
+failcallback  function added
 
+You can use it like this:
+
+```
+nanoajax.ajax({url: 'url'}, successCallback, failCallback)
+```
 
 An ajax library you need a microscope to see.
 
